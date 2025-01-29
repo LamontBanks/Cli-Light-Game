@@ -1,7 +1,7 @@
 class Grid:
 
     def __init__(self, col=5, row=8):
-        if col <= 1 and row <= 1:
+        if col < 1 and row < 1:
             raise Exception(f"Both col ({col}) and row ({row}) must be >= 1")
         
         self._num_cols = col

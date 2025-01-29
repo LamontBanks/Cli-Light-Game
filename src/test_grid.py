@@ -5,13 +5,12 @@ from grid import *
 class TestGrid(unittest.TestCase):
     
     def setUp(self):
-        self.grid = Grid(4, 7)
+        pass
 
     def test_get_adjacent_cells(self):
-        grid1 = Grid(3, 3)
-
         # col, row
-        actual_adj_coords = self.grid._adjacent_cells_coords(1, 1)
+        grid1 = Grid(3, 3)
+        actual_adj_coords = grid1._adjacent_cells_coords(1, 1)
         expected_coords = [
                             (1, 0),
                             (0, 1),
@@ -21,6 +20,25 @@ class TestGrid(unittest.TestCase):
 
         for coord in expected_coords:
             self.assertIn(coord, actual_adj_coords)
+
+        # col, row
+        grid2 = Grid(1, 5)
+        actual_adj_coords = grid2._adjacent_cells_coords(0, 2)
+        expected_coords = [
+                            (0, 1),
+                            (0, 3),
+                        ]
+
+        for coord in expected_coords:
+            self.assertIn(coord, actual_adj_coords)
+
+        # col, row
+        grid3 = Grid(1, 1)
+        actual_adj_coords = grid3._adjacent_cells_coords(0, 0)
+        expected_coords = []
+
+        for coord in expected_coords:
+            self.assertListEqual(expected_coords, actual_adj_coords)
 
 
 if __name__ == "__main__":
