@@ -33,6 +33,19 @@ class Grid:
 
         return cells
     
+    """Set all cells to 0"""
+    def _reset_grid(self):
+        for col in range(self._num_cols):
+             for row in range(self._num_rows):
+                self.grid[col][row] = 0
+
+    """Flips given cell and its adjacent cells from 1 to 0, or 0 to 1"""
+    def toggle_cell(self, col, row):
+        if (col < 0 or col > self._num_cols - 1) or (row < 0 or row > self._num_rows - 1):
+            raise IndexError(f"Invalid grid range: col: {col}, row: {row}")
+        
+
+    
     def __repr__(self):
         repr_str = ""
         col_labels = "   "
