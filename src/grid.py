@@ -12,6 +12,26 @@ class Grid:
         for c in range(col):
             self._grid[c] = [0 for i in range(self._num_rows)]
 
+    """Return a list of tuples containing the adjacent cells col, row coordinates.
+        Format: [(col, row), (col, row), etc.]
+    Don't rely on the cells being listed in a particular order (i.e., top, bottom, ..., etc.)"""
+    def _adjacent_cells_coords(self, col, row):
+        cells = []
+
+        # left
+        if 0 <= col - 1:
+            cells.append((col - 1, row))
+        # right
+        if col + 1 <= self._num_cols - 1:
+            cells.append((col + 1, row))
+        # top
+        if row - 1 >= 0:
+            cells.append((col, row - 1))
+        # bottom
+        if row + 1 <= self._num_rows - 1:
+            cells.append((col, row + 1))
+
+        return cells
     
     def __repr__(self):
         repr_str = ""
