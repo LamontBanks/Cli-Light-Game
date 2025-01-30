@@ -1,9 +1,6 @@
 import random
 
 class Grid:
-
-
-
     def __init__(self, col=3, row=5):
         if col < 1 and row < 1:
             raise Exception(f"Both col ({col}) and row ({row}) must be >= 1")
@@ -25,6 +22,9 @@ class Grid:
         # Generate the puzzle
         self._set_all_lights_on()
         self.toggle_random_lights()
+
+        # Clear history after setting the grid
+        self.toggle_history = []
 
     def toggle_random_lights(self, num_moves=3):
         for i in range(num_moves):
@@ -61,7 +61,6 @@ class Grid:
              for row in range(self._num_rows):
                 self._grid[col][row] = self._light_on
 
-    """Flips given cell and its adjacent cells from . to O, or O to ."""
     def toggle_cell(self, col, row):
         self._toggle_single_cell(col, row)
 
@@ -81,7 +80,6 @@ class Grid:
         else:
             self._grid[col][row] = self._light_on
     
-    """Undo last move, if any"""
     def undo_last_move(self):
         if len(self.toggle_history) > 0:
             col, row = self.toggle_history.pop()
@@ -89,7 +87,7 @@ class Grid:
 
             return col, row
         return None
-    
+
     def get_solution(self):
         return list(self._full_solution)
 
