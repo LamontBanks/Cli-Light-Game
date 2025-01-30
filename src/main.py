@@ -1,7 +1,10 @@
+import re
+
 from grid import Grid
 
 grid = Grid()
 display_solution = False
+grid.create_new_puzzle(num_moves=10)
 
 while True:
     print('\n')
@@ -16,35 +19,12 @@ while True:
     print('---')
 
     # Input
-    coords_input = input('Enter coordinates: ')
+    command = input('Enter coordinates: ')
 
-    # Undo
-    if coords_input == 'u':
-        coords = grid.undo_last_move()
-        if coords != None:
-            print(f"==> Reverted col: {coords[0]}, row: {coords[1]}")
-        continue
-
-    # Blank entry
-    elif coords_input == "":
-        continue
-
-    # Print the coordinates needed to turn all lights on
-    elif coords_input == "solution":
-        display_solution = True
-        continue
-
-    elif coords_input == "solve":
-        sol = grid.get_solution()
-        if len(sol) > 0:
-            for coords in sol:
-                grid.toggle_cell(coords[0], coords[1])
-        else:
-            continue
-    
-    # Toggle col, row
-    else:
-        coords_input = coords_input.split(',')
+    # Toggle cell
+    # TODO: Couldn't do re.match in case statements?
+    if (re.match(r"\s*\d+\s*,\s*\d+\s*", command)):
+        coords_input = command.split(',')
         col = int(coords_input[0])
         row = int(coords_input[1])
 
@@ -53,4 +33,32 @@ while True:
         try:
             grid.toggle_cell(col, row)
         except IndexError:
-            print(f"==> Invalid col, row: {col}, {row}")
+            print(f"==> Invalid col: {col}, row: {row}")
+
+        continue
+
+    match command:
+        # Undo
+        case 'u':
+            last_coords = grid.undo_last_move()
+            if last_coords != None:
+                print(f"==> Reverted col: {last_coords[0]}, row: {last_coords[1]}")
+                last_coords = None
+        # Solution
+        case "solution":
+            display_solution = True
+        # Blank entry
+        case "":
+            continue
+        # Reset
+        case "reset":
+            grid.create_new_puzzle()
+            display_solution = False
+        # Solve
+        case "solve":
+            sol = grid.get_solution()
+            if len(sol) > 0:
+                for coords in sol:
+                    grid.toggle_cell(coords[0], coords[1])
+        case _:
+            continue

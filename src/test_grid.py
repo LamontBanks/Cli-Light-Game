@@ -58,5 +58,15 @@ class TestGrid(unittest.TestCase):
         with self.assertRaises(IndexError):
             grid1.toggle_cell(-1, 4)
 
+    def test_solution_solves_grid(self):
+        grid = Grid(2, 2)
+        grid.create_new_puzzle()
+        
+        grid.solve_puzzle()
+        
+        self.assertTrue(grid.is_solved(), f"\nGrid is not solved:\n{grid}")
+
+# Run single test:
+# $ python3 src/test_grid.py TestGrid.test_solution_solves_grid
 if __name__ == "__main__":
     unittest.main()
