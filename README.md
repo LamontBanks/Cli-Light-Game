@@ -6,24 +6,24 @@ Toggle on all the lights, but each light flips the lights next to it:
 
 1. Start Game
 
-        0  1  2  3  4
-        -------------
-    0 |  O  O  .  O  O
-    1 |  O  .  O  .  O
-    2 |  O  .  O  O  O
-    3 |  .  O  O  .  .
-    4 |  .  .  O  .  O
+            0  1  2  3  4
+            -------------
+        0 |  O  O  .  O  O
+        1 |  O  .  O  .  O
+        2 |  O  .  O  O  O
+        3 |  .  O  O  .  .
+        4 |  .  .  O  .  O
 
-    Instructions - turn on all the lights
-    > Enter the col, row - format: 3,5 or 3, 5 or 3 , 5
-    Commands:
-    > Undo: ['u']
-    > Solution: ['solution']
-    > Solve: ['solve']
-    > New Puzzle: ['new']
-    > Solution: ['solution']
-    ---
-    Enter coordinates or command: 
+        Instructions - turn on all the lights
+        > Enter the col, row - format: 3,5 or 3, 5 or 3 , 5
+        Commands:
+        > Undo: ['u']
+        > Solution: ['solution']
+        > Solve: ['solve']
+        > New Puzzle: ['new']
+        > Solution: ['solution']
+        ---
+        Enter coordinates or command: 
 
 1. Toggle a light: `1, 3`
 
@@ -79,7 +79,7 @@ Enter each coordinate to solve one at a time (order doesn't matter).
     4 |  O  O  O  O  O
 
 ## Usage
-python3 src/main.py
+`$ python3 src/main.py`
 
 ## Future Enhancements
 - Display most recent move
