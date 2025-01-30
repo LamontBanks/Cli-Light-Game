@@ -25,7 +25,7 @@ Toggle on all the lights, but each light flips the lights next to it:
         ---
         Enter coordinates or command: 
 
-1. Toggle a light: `1, 3`
+1. Toggle a light: `1, 3`:
 
             0  1  2  3  4
             -------------
@@ -35,7 +35,7 @@ Toggle on all the lights, but each light flips the lights next to it:
         3 |  O  .  .  .  .
         4 |  .  O  O  .  O
 
-1. Toggle another light: `3, 3`, etc.
+1. Toggle another light: `3, 3`:
 
             0  1  2  3  4
             -------------
