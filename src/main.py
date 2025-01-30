@@ -7,21 +7,22 @@ while True:
     print(grid)
 
     # Input
-    print("Enter the col, row - ex: 3, 5:")
+    print("Enter the col, row - ex: 3,5 or 3, 5:")
     print("> \'u\' to undo moves:")
 
     if display_solution:
        print(f"> Solution: {grid.get_solution()}")
     else:
-        print("\'solution\' to show the answer")
+        print("> \'solution\' to show the answer")
     print('---')
 
-    coords_input = input()
+    coords_input = input('Enter coordinates: ')
 
     # Undo
     if coords_input == 'u':
-        grid.undo_last_move()
-        # print(f"==> Undid col: {col}, row: {row}")
+        coords = grid.undo_last_move()
+        if coords != None:
+            print(f"==> Undid col: {coords[0]}, row: {coords[1]}")
         continue
 
     # Print the coordinates needed to turn all lights on
