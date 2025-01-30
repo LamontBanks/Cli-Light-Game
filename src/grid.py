@@ -1,16 +1,39 @@
+import random
+
 class Grid:
 
-    def __init__(self, col=5, row=8):
+
+
+    def __init__(self, col=3, row=5):
         if col < 1 and row < 1:
             raise Exception(f"Both col ({col}) and row ({row}) must be >= 1")
         
         self._num_cols = col
         self._num_rows = row
+
+        self._light_on = 'O'
+        self._light_off = '.'
+
+        self.toggle_history = []
+        self._full_solution = set()
         
         # Create the grid
         self._grid = [0 for i in range(self._num_cols)]
         for c in range(col):
-            self._grid[c] = [0 for i in range(self._num_rows)]
+            self._grid[c] = [self._light_on for i in range(self._num_rows)]
+
+        # Generate the puzzle
+        self._set_all_lights_on()
+        self.toggle_random_lights()
+
+    def toggle_random_lights(self, num_moves=3):
+        for i in range(num_moves):
+            random_col = random.randint(0, self._num_cols - 1)
+            random_row = random.randint(0, self._num_rows - 1)
+
+            self.toggle_cell(random_col, random_row)
+
+            self._full_solution.add((random_col, random_row))
 
     """Return a list of tuples containing the adjacent cells col, row coordinates.
         Format: [(col, row), (col, row), etc.]
@@ -33,19 +56,43 @@ class Grid:
 
         return cells
     
-    """Set all cells to 0"""
-    def _reset_grid(self):
+    def _set_all_lights_on(self):
         for col in range(self._num_cols):
              for row in range(self._num_rows):
-                self.grid[col][row] = 0
+                self._grid[col][row] = self._light_on
 
-    """Flips given cell and its adjacent cells from 1 to 0, or 0 to 1"""
+    """Flips given cell and its adjacent cells from . to O, or O to ."""
     def toggle_cell(self, col, row):
+        self._toggle_single_cell(col, row)
+
+        self.toggle_history.append((col, row))
+
+        adj_cells = self._adjacent_cells_coords(col, row)
+        for cell in adj_cells:
+            adj_col, adj_row = cell
+            self._toggle_single_cell(adj_col, adj_row)
+
+    def _toggle_single_cell(self, col, row):
         if (col < 0 or col > self._num_cols - 1) or (row < 0 or row > self._num_rows - 1):
             raise IndexError(f"Invalid grid range: col: {col}, row: {row}")
-        
 
+        if self._grid[col][row] == self._light_on:
+            self._grid[col][row] = self._light_off
+        else:
+            self._grid[col][row] = self._light_on
     
+    """Undo last move, if any"""
+    def undo_last_move(self):
+        if len(self.toggle_history) > 0:
+            col, row = self.toggle_history.pop()
+            self.toggle_cell(col, row)
+
+            return col, row
+        return None
+    
+    def get_solution(self):
+        return list(self._full_solution)
+
     def __repr__(self):
         repr_str = ""
         col_labels = "   "
@@ -69,7 +116,7 @@ class Grid:
             row += f"{str(r)} |"
 
             for c in range(self._num_cols):
-                row += "  " + str(self._grid[c][r])
+                row += "  " + self._grid[c][r]
             repr_str += row + "\n"
             row = ""
 

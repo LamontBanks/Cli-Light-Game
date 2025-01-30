@@ -40,6 +40,23 @@ class TestGrid(unittest.TestCase):
         for coord in expected_coords:
             self.assertListEqual(expected_coords, actual_adj_coords)
 
+    def test_toggle_cell_index_error(self):
+        grid1 = Grid(3, 3)
+
+        with self.assertRaises(IndexError):
+            grid1.toggle_cell(-1, 0)
+
+        with self.assertRaises(IndexError):
+            grid1.toggle_cell(0, -1)
+
+        with self.assertRaises(IndexError):
+            grid1.toggle_cell(4, 0)
+
+        with self.assertRaises(IndexError):
+            grid1.toggle_cell(0, 4)
+
+        with self.assertRaises(IndexError):
+            grid1.toggle_cell(-1, 4)
 
 if __name__ == "__main__":
     unittest.main()
