@@ -4,7 +4,7 @@ import logging
 class Grid:
     def __init__(self, col=5, row=5):
         self._logger = logging.getLogger(__name__)
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.CRITICAL)
 
         if col < 1 and row < 1:
             raise Exception(f"Both col ({col}) and row ({row}) must be >= 1")
