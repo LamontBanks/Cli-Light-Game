@@ -1,18 +1,19 @@
 import random
 
 class Grid:
-    def __init__(self, col=3, row=5):
+    def __init__(self, col=5, row=5, num_moves=5):
         if col < 1 and row < 1:
             raise Exception(f"Both col ({col}) and row ({row}) must be >= 1")
         
         self._num_cols = col
         self._num_rows = row
+        self._num_moves = num_moves
 
         self._light_on = 'O'
         self._light_off = '.'
 
         self.toggle_history = []
-        self._full_solution = set()
+        self._original_solution = set()
         
         # Create the grid
         self._grid = [0 for i in range(self._num_cols)]
@@ -26,14 +27,17 @@ class Grid:
         # Clear history after setting the grid
         self.toggle_history = []
 
-    def toggle_random_lights(self, num_moves=3):
-        for i in range(num_moves):
+    def toggle_random_lights(self):
+        for i in range(self._num_moves):
             random_col = random.randint(0, self._num_cols - 1)
             random_row = random.randint(0, self._num_rows - 1)
 
             self.toggle_cell(random_col, random_row)
 
-            self._full_solution.add((random_col, random_row))
+    def _set_all_lights_on(self):
+        for col in range(self._num_cols):
+             for row in range(self._num_rows):
+                self._grid[col][row] = self._light_on
 
     """Return a list of tuples containing the adjacent cells col, row coordinates.
         Format: [(col, row), (col, row), etc.]
@@ -55,17 +59,15 @@ class Grid:
             cells.append((col, row + 1))
 
         return cells
-    
-    def _set_all_lights_on(self):
-        for col in range(self._num_cols):
-             for row in range(self._num_rows):
-                self._grid[col][row] = self._light_on
 
     def toggle_cell(self, col, row):
         self._toggle_single_cell(col, row)
 
+        # Save history, update solution
         self.toggle_history.append((col, row))
+        self._add_or_remove_coord_from_solution(col, row)
 
+        # Toggle adjacent cells
         adj_cells = self._adjacent_cells_coords(col, row)
         for cell in adj_cells:
             adj_col, adj_row = cell
@@ -89,8 +91,17 @@ class Grid:
         return None
 
     def get_solution(self):
-        return list(self._full_solution)
+        return list(self._original_solution)
+    
+    """Save or remove given coords from the solution"""
+    def _add_or_remove_coord_from_solution(self, col, row):
+        coord = (col, row)
+        if coord in self._original_solution:
+            self._original_solution.remove(coord)
+        else:
+            self._original_solution.add(coord)
 
+    # Print the grid with some formatting
     def __repr__(self):
         repr_str = ""
         col_labels = "   "
@@ -109,10 +120,8 @@ class Grid:
 
         # Row labels and values
         row = ""
-
         for r in range(self._num_rows):
             row += f"{str(r)} |"
-
             for c in range(self._num_cols):
                 row += "  " + self._grid[c][r]
             repr_str += row + "\n"
