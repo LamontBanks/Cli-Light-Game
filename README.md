@@ -81,6 +81,10 @@ Enter each coordinate to solve one at a time (order doesn't matter).
 ## Usage
 `$ python3 src/main.py`
 
+## Tests
+- Unit: `$ ./test.sh`
+- Coverage: `https://coverage.readthedocs.io/en/7.6.10/`
+
 ## Future Enhancements
 - Display most recent move
 - Detect solved puzzle

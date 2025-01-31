@@ -23,6 +23,19 @@ class TestGrid(unittest.TestCase):
             )
 
         return moves
+    
+    """Perform random player on the grid"""
+    def perform_player_moves(self, grid, num_moves, rand_seed):
+        random.seed(rand_seed)
+        num_cols, num_rows = grid.dimensions()
+
+        for i in range(num_moves):
+            random_col = random.randint(0, num_cols - 1)
+            random_row = random.randint(0, num_rows - 1)
+            
+            grid.player_toggle_cell(random_col, random_row)
+
+        return grid
 
     """Solved puzzle for test comparisons"""
     def solved_grid(self, num_cols, num_rows):
@@ -264,7 +277,42 @@ class TestGrid(unittest.TestCase):
         
         self.assertTrue(grid.is_solved(), f"\nGrid is not solved:\n{grid}")
 
+    def test_undo_last_move(self):
+        rand_seed = 8
+
+        # Two grids with the same random seed for assertions
+        grid = Grid()
+        grid.create_new_puzzle(rand_seed=rand_seed)
+
+        original_grid = Grid()
+        original_grid.create_new_puzzle(rand_seed=rand_seed)
+
+        # Undo with no previous moves - no change happens 
+        grid.undo_last_move()
+        self.assertEqual(grid, original_grid)
+
+        # Undo 1 player move
+        self.perform_player_moves(grid, num_moves=1, rand_seed=rand_seed)
+        self.assertNotEqual(grid, original_grid)
+        
+        # Restored
+        grid.undo_last_move()
+        self.assertEqual(grid, original_grid)
+
+        # Undo 3 player moves
+        self.perform_player_moves(grid, num_moves=3, rand_seed=rand_seed)
+
+        grid.undo_last_move()
+        self.assertNotEqual(grid, original_grid)
+
+        grid.undo_last_move()
+        self.assertNotEqual(grid, original_grid)
+
+        # Restored
+        grid.undo_last_move()
+        self.assertEqual(grid, original_grid)
+
 # Run single test:
-# $ python3 src/test_grid.py TestGrid.test_get_adjacent_cells
+# python3 src/test_grid.py TestGrid.test_undo_last_move
 if __name__ == "__main__":
     unittest.main()

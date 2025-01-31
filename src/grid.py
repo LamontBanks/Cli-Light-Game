@@ -42,8 +42,7 @@ class Grid:
         self._set_all_lights_on()
 
         # Toggle random lights, save solution
-        if rand_seed:
-            random.seed(rand_seed)
+        random.seed(rand_seed)
 
         # TODO - Too few moves and a smale grid size means it's likely for the grid to result in the original state (all lights on)
         # Implement some guard against this
@@ -149,6 +148,22 @@ class Grid:
         self._logger.info(f"Get current solution:")
         return list(self._curr_solution)
     
+    """Returns a random coordinate tuple from the current solution, and the number of moves remaining
+    (assuming the hint is performed)
+    Ex: ((3, 5), 2)
+    Ex: (None, 0)
+    """
+    def hint(self):
+        try:
+            rand_coord = self._curr_solution.pop()
+            hint = (rand_coord, len(self._curr_solution))
+            # Put the coord back
+            self._curr_solution.add(rand_coord)
+            
+            return hint
+        except KeyError:
+            return (None, 0)
+    
     """Toggles the cells needed to turn all the lights on"""
     def solve_puzzle(self):
         self._logger.info(f"Solving puzzle using solution: {self.get_curr_solution()}")
@@ -186,6 +201,10 @@ class Grid:
         
         # Otherwise, puzzle is solved
         return True
+    
+    """Num columns, num rows"""
+    def dimensions(self):
+        return self._num_cols, self._num_rows
 
     """Grids are equal if:
     - Same dimensions
@@ -204,11 +223,10 @@ class Grid:
                     return False
         return True
 
-
     # Print the grid with some formatting
     def __repr__(self):
         repr_str = ""
-        col_labels = "   "
+        col_labels = "\n   "
         
         # Top column labels, with underline
         for i in range(self._num_cols):
