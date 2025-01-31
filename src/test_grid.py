@@ -33,37 +33,90 @@ class TestGrid(unittest.TestCase):
 
     # Toggle cells tests
     def test_get_adjacent_cells(self):
-        # col, row
-        grid1 = Grid(3, 3)
-        actual_adj_coords = grid1._adjacent_cells_coords(1, 1)
-        expected_coords = [
+        # Center cell - all cells returned
+        grid3x3 = Grid(3, 3)
+        actual_adj_coords = set(grid3x3._adjacent_cells_coords(1, 1))
+        expected_coords = set([
                             (1, 0),
                             (0, 1),
                             (1, 2),
                             (2, 1)
-                        ]
+                        ])
+        self.assertSetEqual(actual_adj_coords, expected_coords)
 
-        for coord in expected_coords:
-            self.assertIn(coord, actual_adj_coords)
-
-        # col, row
-        grid2 = Grid(1, 5)
-        actual_adj_coords = grid2._adjacent_cells_coords(0, 2)
-        expected_coords = [
+        # Upper-left corner - right, bottom returned
+        actual_adj_coords = set(grid3x3._adjacent_cells_coords(0, 0))
+        expected_coords = set([
                             (0, 1),
-                            (0, 3),
-                        ]
+                            (1, 0)
+                        ])
+        self.assertSetEqual(actual_adj_coords, expected_coords)
 
-        for coord in expected_coords:
-            self.assertIn(coord, actual_adj_coords)
+        # Upper-middle cell - left, bottom, right returned
+        actual_adj_coords = set(grid3x3._adjacent_cells_coords(1, 0))
+        expected_coords = set([
+                            (0, 0),
+                            (2, 0),
+                            (1, 1)
+                        ])
+        self.assertSetEqual(actual_adj_coords, expected_coords)
 
-        # col, row
-        grid3 = Grid(1, 1)
-        actual_adj_coords = grid3._adjacent_cells_coords(0, 0)
-        expected_coords = []
+        # Upper-left-corner cell - left, bottom returned
+        actual_adj_coords = set(grid3x3._adjacent_cells_coords(2, 0))
+        expected_coords = set([
+                            (1, 0),
+                            (2, 1)
+                        ])
+        self.assertSetEqual(actual_adj_coords, expected_coords)
 
-        for coord in expected_coords:
-            self.assertListEqual(expected_coords, actual_adj_coords)
+        # left-middle cell - top, left, bottom returned
+        actual_adj_coords = set(grid3x3._adjacent_cells_coords(2, 1))
+        expected_coords = set([
+                            (2, 0),
+                            (1, 1),
+                            (2, 2)
+                        ])
+        self.assertSetEqual(actual_adj_coords, expected_coords)
+
+        # Lower left corner cell - top, left returned
+        actual_adj_coords = set(grid3x3._adjacent_cells_coords(2, 2))
+        expected_coords = set([
+                            (2, 1),
+                            (1, 2)
+                        ])
+        self.assertSetEqual(actual_adj_coords, expected_coords)
+
+        # Lower middle cell - top, left, right returned
+        actual_adj_coords = set(grid3x3._adjacent_cells_coords(1, 2))
+        expected_coords = set([
+                            (0, 2),
+                            (1, 1),
+                            (2, 2)
+                        ])
+        self.assertSetEqual(actual_adj_coords, expected_coords)
+
+        # Lower right corner cell - top, right returned
+        actual_adj_coords = set(grid3x3._adjacent_cells_coords(0, 2))
+        expected_coords = set([
+                            (0, 1),
+                            (1, 2)
+                        ])
+        self.assertSetEqual(actual_adj_coords, expected_coords)
+
+        # Left middle cell - top, right, bottom returned
+        actual_adj_coords = set(grid3x3._adjacent_cells_coords(0, 1))
+        expected_coords = set([
+                            (0, 0),
+                            (1, 1),
+                            (0, 2)
+                        ])
+        self.assertSetEqual(actual_adj_coords, expected_coords)
+
+        # 1x1 grid, nothing returned
+        grid1x1 = Grid(1, 1)
+        actual_adj_coords = grid1x1._adjacent_cells_coords(0, 0)
+        self.assertEqual(actual_adj_coords, [])
+
 
     def test_toggle_cell_index_error(self):
         grid1 = Grid(3, 3)
@@ -83,7 +136,6 @@ class TestGrid(unittest.TestCase):
         with self.assertRaises(IndexError):
             grid1._toggle_single_cell(-1, 4)
 
-    # Grid creation and reset
     def test_create_new_puzzle(self):
         col = 3
         row = 5
@@ -139,6 +191,6 @@ class TestGrid(unittest.TestCase):
         self.assertTrue(grid.is_solved(), f"\nGrid is not solved:\n{grid}")
 
 # Run single test:
-# $ python3 src/test_grid.py TestGrid.test_reset
+# $ python3 src/test_grid.py TestGrid.test_get_adjacent_cells
 if __name__ == "__main__":
     unittest.main()
