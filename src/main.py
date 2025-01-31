@@ -4,7 +4,7 @@ from grid import Grid
 
 # Create grid
 grid = Grid(5, 5)
-grid.create_new_puzzle(num_moves=10)
+grid.create_new_puzzle(num_random_toggles=10)
 
 # Commands
 cmd_undo = ['u', 'undo']
@@ -32,7 +32,7 @@ while True:
 
     # Persistently show solution, history after asked for
     if display_history:
-       print(f"> History: {grid.history}")
+       print(f"> History: {grid.history()}")
     else:
         print(f"> History: {cmd_history}")
 

@@ -4,7 +4,7 @@ import logging
 class Grid:
     def __init__(self, col=5, row=5):
         self._logger = logging.getLogger(__name__)
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.CRITICAL)
 
         if col < 1 and row < 1:
             raise Exception(f"Both col ({col}) and row ({row}) must be >= 1")
@@ -13,7 +13,7 @@ class Grid:
         self._num_rows = row
         self._light_on = 'O'
         self._light_off = '.'
-        self.history = []
+        self._history = []
 
         # Saves the coordinates used to generate the puzzle, and the current solution based on the player inputs
         # The current solution will initially contain the original coordinates used to create the puzzle
@@ -34,7 +34,8 @@ class Grid:
         for c in range(col):
             self._grid[c] = [self._light_on for i in range(self._num_rows)]
 
-    def create_new_puzzle(self, num_moves=5, rand_seed=None):
+    """num_moves is NOT guaranteed to create a grid requiring x moves to solve"""
+    def create_new_puzzle(self, num_random_toggles=5, rand_seed=None):
         self._logger.info(f"Creating puzzle")
         
         # Initial state
@@ -46,7 +47,7 @@ class Grid:
 
         # TODO - Too few moves and a smale grid size means it's likely for the grid to result in the original state (all lights on)
         # Implement some guard against this
-        for i in range(num_moves):
+        for i in range(num_random_toggles):
             random_col = random.randint(0, self._num_cols - 1)
             random_row = random.randint(0, self._num_rows - 1)
 
@@ -54,7 +55,7 @@ class Grid:
             self._add_or_remove_coord_from_set(random_col, random_row, self._original_solution)
 
         # Clear history
-        self.history = []
+        self._history = []
         self._curr_solution = self._original_solution.copy()
         self._original_grid = self._grid.copy()
 
@@ -77,7 +78,7 @@ class Grid:
         self._toggle_cell_group(col, row)
 
         # Save history, update attempted solution
-        self.history.append((col, row))
+        self._history.append((col, row))
         self._add_or_remove_coord_from_set(col, row, self._curr_solution)
 
     def _toggle_cell_group(self, col, row):
@@ -90,7 +91,6 @@ class Grid:
 
         if (col < 0 or col > self._num_cols - 1) or (row < 0 or row > self._num_rows - 1):
             raise IndexError(f"Invalid grid range: ({col}, {row})")
-
         if self._grid[col][row] == self._light_on:
             self._grid[col][row] = self._light_off
         else:
@@ -128,8 +128,8 @@ class Grid:
     def undo_last_move(self):
         self._logger.info(f"Undo last move")
 
-        if len(self.history) > 0:
-            col, row = self.history.pop()
+        if len(self._history) > 0:
+            col, row = self._history.pop()
             self._logger.info(f"Undo ({col}, {row})...")
             self._toggle_cell_group(col, row)
             self._add_or_remove_coord_from_set(col, row, self._curr_solution)
@@ -142,6 +142,9 @@ class Grid:
         self._logger.debug(f"Get original solution:")
         return list(self._original_solution)
     
+    def history(self):
+        return self._history
+    
     def get_curr_solution(self):
         self._logger.info(f"Get current solution:")
         return list(self._curr_solution)
@@ -153,7 +156,9 @@ class Grid:
         sol = self.get_curr_solution()
         if len(sol) > 0:
             for coords in sol:
-                self._toggle_cell_group(coords[0], coords[1])
+                col, row = coords
+                self._toggle_cell_group(col, row)
+                self._add_or_remove_coord_from_set(col, row, self._curr_solution)
     
     """For the given coord, add to the given set if not present. Or remove from set if present"""
     def _add_or_remove_coord_from_set(self, col, row, sol_set):
@@ -170,8 +175,8 @@ class Grid:
 
     def is_solved(self):
         # All moves must be done
-        # if len(self._curr_solution) > 0:
-        #     return False
+        if len(self._curr_solution) > 0:
+            return False
         
         # All lights on
         for c in range(self._num_cols):
