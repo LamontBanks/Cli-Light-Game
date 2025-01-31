@@ -142,6 +142,24 @@ class TestGrid(unittest.TestCase):
 
         grid._set_all_lights_on()
 
+        # Toggle the targeted cell
+        toggled_cell_col = 3
+        toggled_cell_row = 1
+        grid.player_toggle_cell(toggled_cell_col, toggled_cell_row)
+
+        # Player move added to history
+        self.assertEqual(grid.history(), [(toggled_cell_col, toggled_cell_row)])
+
+        # Player move is part of the current solution
+        self.assertListEqual(grid.get_curr_solution(), [(toggled_cell_col, toggled_cell_row)])
+
+    def test_toggle_cell_group(self):
+        col = 5
+        row = 3
+        grid = Grid(col, row)
+
+        grid._set_all_lights_on()
+
         # Save state of toggled cell and adjacent cells
         toggled_cell_col = 3
         toggled_cell_row = 1
@@ -159,7 +177,7 @@ class TestGrid(unittest.TestCase):
         self.assertEqual(grid._grid[toggled_cell_col + 1][toggled_cell_row], grid._light_on)
 
         # Toggle the targeted cell
-        grid.player_toggle_cell(toggled_cell_col, toggled_cell_row)
+        grid._toggle_cell_group(toggled_cell_col, toggled_cell_row)
 
         # Assert expected lights are off
         # Target cell
@@ -172,11 +190,6 @@ class TestGrid(unittest.TestCase):
         self.assertEqual(grid._grid[toggled_cell_col - 1][toggled_cell_row], grid._light_off)
         # Right
         self.assertEqual(grid._grid[toggled_cell_col + 1][toggled_cell_row], grid._light_off)
-
-        # Player move added to history
-        self.assertEqual(grid.history(), [(toggled_cell_col, toggled_cell_row)])
-        # Player move is part of the current solution
-        self.assertListEqual(grid.get_curr_solution(), [(toggled_cell_col, toggled_cell_row)])
 
     def test_create_new_puzzle(self):
         col = 3
@@ -224,10 +237,29 @@ class TestGrid(unittest.TestCase):
         # Current solution re-initialized
         self.assertEqual(grid._curr_solution, grid._original_solution)
 
-    def test_solve(self):
-        grid = Grid(2, 2)
+    def test_solve_with_no_player_input(self):
+        grid = Grid(3, 5)
         grid.create_new_puzzle()
         
+        grid.solve_puzzle()
+        
+        self.assertTrue(grid.is_solved(), f"\nGrid is not solved:\n{grid}")
+
+    def test_solve_after_player_input(self):
+        col = 5
+        row = 3
+        grid = Grid(col, row)
+    
+        grid.create_new_puzzle()
+        
+        player_moves = self.list_of_random_moves(col, row, num_moves=5, rand_seed=3)
+        for move in player_moves:
+            grid.player_toggle_cell(move[0], move[1])
+
+        # Ensure the puzzle isn't already solved from player actions
+        self.assertNotEqual(grid, self.solved_grid(col, row))
+
+        # Solve it
         grid.solve_puzzle()
         
         self.assertTrue(grid.is_solved(), f"\nGrid is not solved:\n{grid}")
