@@ -117,7 +117,6 @@ class TestGrid(unittest.TestCase):
         actual_adj_coords = grid1x1._adjacent_cells_coords(0, 0)
         self.assertEqual(actual_adj_coords, [])
 
-
     def test_toggle_cell_index_error(self):
         grid1 = Grid(3, 3)
 
@@ -135,6 +134,49 @@ class TestGrid(unittest.TestCase):
 
         with self.assertRaises(IndexError):
             grid1._toggle_single_cell(-1, 4)
+
+    def test_player_toggle_cell(self):
+        col = 5
+        row = 3
+        grid = Grid(col, row)
+
+        grid._set_all_lights_on()
+
+        # Save state of toggled cell and adjacent cells
+        toggled_cell_col = 3
+        toggled_cell_row = 1
+
+        # Assert all lights are on
+        # Target cell
+        self.assertEqual(grid._grid[toggled_cell_col][toggled_cell_row], grid._light_on)
+        # Top
+        self.assertEqual(grid._grid[toggled_cell_col][toggled_cell_row - 1], grid._light_on)
+        # Bottom
+        self.assertEqual(grid._grid[toggled_cell_col][toggled_cell_row + 1], grid._light_on)
+        # Left
+        self.assertEqual(grid._grid[toggled_cell_col - 1][toggled_cell_row], grid._light_on)
+        # Right
+        self.assertEqual(grid._grid[toggled_cell_col + 1][toggled_cell_row], grid._light_on)
+
+        # Toggle the targeted cell
+        grid.player_toggle_cell(toggled_cell_col, toggled_cell_row)
+
+        # Assert expected lights are off
+        # Target cell
+        self.assertEqual(grid._grid[toggled_cell_col][toggled_cell_row], grid._light_off)
+        # Top
+        self.assertEqual(grid._grid[toggled_cell_col][toggled_cell_row - 1], grid._light_off)
+        # Bottom
+        self.assertEqual(grid._grid[toggled_cell_col][toggled_cell_row + 1], grid._light_off)
+        # Left
+        self.assertEqual(grid._grid[toggled_cell_col - 1][toggled_cell_row], grid._light_off)
+        # Right
+        self.assertEqual(grid._grid[toggled_cell_col + 1][toggled_cell_row], grid._light_off)
+
+        # Player move added to history
+        self.assertEqual(grid.history(), [(toggled_cell_col, toggled_cell_row)])
+        # Player move is part of the current solution
+        self.assertListEqual(grid.get_curr_solution(), [(toggled_cell_col, toggled_cell_row)])
 
     def test_create_new_puzzle(self):
         col = 3
