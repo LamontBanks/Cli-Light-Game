@@ -92,10 +92,10 @@ class TestGrid(unittest.TestCase):
         grid.create_new_puzzle(rand_seed=7)
 
         # Not already solved (ultimately depends on random seed)
-        self.assertNotEqual(grid, self.solved_grid())
+        self.assertNotEqual(grid, self.solved_grid(col, row))
 
         # Empty player move history
-        self.assertEqual(grid.history, [])
+        self.assertEqual(grid.history(), [])
 
         # At least 1 move required to solve
         self.assertGreaterEqual(len(grid._original_solution), 1)
