@@ -2,34 +2,45 @@ import re
 
 from grid import Grid
 
-grid = Grid()
-display_solution = False
+# Create grid
+grid = Grid(5, 5)
 grid.create_new_puzzle(num_moves=10)
 
 # Commands
-cmd_undo = ['u']
+cmd_undo = ['u', 'undo']
 cmd_solution = ['solution']
 cmd_solve = ['solve']
-cmd_new = ['new']
+cmd_reset = ['reset']
+cmd_new = ['n', 'new']
+cmd_history = ['h', 'history']
 
+# Game loop flags
+display_solution = False
+display_history = False
 
 while True:
     # Instructions
     print('\n')
     print(grid)
     print("Instructions - turn on all the lights")
-    print("> Enter the col, row - format: 3,5 or 3, 5 or 3 , 5")
+    print("> Enter the col, row - format: 3, 5")
     print("Commands:")
     print(f"> Undo: {cmd_undo}")
     print(f"> Solution: {cmd_solution}")
     print(f"> Solve: {cmd_solve}")
     print(f"> New Puzzle: {cmd_new}")
 
-    # Persistently show solution after asked for
+    # Persistently show solution, history after asked for
+    if display_history:
+       print(f"> History: {grid.history}")
+    else:
+        print(f"> History: {cmd_history}")
+
     if display_solution:
-       print(f"> Solution: {grid.get_solution()}")
+       print(f"> Solution: {grid.get_curr_solution()}")
     else:
         print(f"> Solution: {cmd_solution}")
+
     print('---')
 
     # Read command
@@ -45,7 +56,7 @@ while True:
         print(f"Entered col: {col}, row: {row}")
 
         try:
-            grid.toggle_cell(col, row)
+            grid.player_toggle_cell(col, row)
         except IndexError:
             print(f"==> Invalid col: {col}, row: {row}")
 
@@ -59,10 +70,17 @@ while True:
         display_solution = True
 
     elif command in cmd_solve:
-        sol = grid.get_solution()
+        sol = grid.get_curr_solution()
         if len(sol) > 0:
             for coords in sol:
                 grid.toggle_cell(coords[0], coords[1])
+
+    elif command in cmd_reset:
+        grid.reset()
+        display_solution = False
+
+    elif command in cmd_history:
+        display_history = True
 
     elif command in cmd_new:
         grid.create_new_puzzle()
