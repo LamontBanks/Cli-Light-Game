@@ -7,20 +7,26 @@ grid = Grid(5, 5)
 grid.create_new_puzzle(num_random_toggles=10)
 
 # Commands
-cmd_undo = ['u', 'undo']
+cmd_undo = ['undo', 'u']
 cmd_solution = ['solution']
 cmd_solve = ['solve']
 cmd_reset = ['reset']
-cmd_new = ['new']
+cmd_new = ['new', 'n']
 cmd_quit = ['quit', 'exit']
-cmd_history = ['h', 'history']
+cmd_history = ['history', 'h']
 cmd_hint = ['hint']
 
 # Game loop flags
 display_solution = False
+curr_solution = ""
+
 display_history = False
+
 display_hint = False
-curr_hint = []
+curr_hint = ""
+hint_coord = ""
+hint_num_moves_left = ""
+
 
 def toggle_flag(flag):
     if flag == True:
@@ -33,7 +39,7 @@ while True:
     print('\n')
     print(grid)
     print(f">>> Turn on all the lights! <<<")
-    print("Adjacent lights (up, down, left, right) will flip on/off")
+    print("Adjacent lights (up, down, left, right) will flip on/off at the same time.")
     print("Enter the col, row, ex: 3, 5\n")
     print(f"\t\t\tCommands:")
     print(f"Undo: {cmd_undo}\tReset: {cmd_reset}\tNew Puzzle: {cmd_new}")
@@ -49,9 +55,9 @@ while True:
         print(f"History: {cmd_history}")
 
     # if display_solution:
-    #    print(f"Solution: {grid.get_curr_solution()}")
+    #    print(f"Solve: {cmd_solve}")
     # else:
-    #     print(f"Solution: {cmd_solution}")
+    #    print(f"Solve: {cmd_solve}")
 
     print(f"Solve: {cmd_solve}")
     print(f"Quit: {cmd_quit}")
@@ -71,6 +77,12 @@ while True:
 
         try:
             grid.player_toggle_cell(col, row)
+
+            # Disable the hint if used
+            if hint_coord:
+                if col == hint_coord[0] and row == hint_coord[1]:
+                    display_hint = False
+
         except IndexError:
             print(f"==> Invalid col: {col}, row: {row}")
 
@@ -90,7 +102,7 @@ while True:
         hint = grid.hint()
         hint_coord, hint_num_moves_left = hint
         if hint_coord:
-            curr_hint = f"f{hint_coord}, Moves Left: {str(hint_num_moves_left)}"
+            curr_hint = f"{hint_coord}, moves Left: {str(hint_num_moves_left)}"
         else:
             curr_hint = "No hint available"
 
@@ -102,14 +114,26 @@ while True:
 
     elif command in cmd_reset:
         grid.reset()
+
         display_solution = False
+        display_hint = False
+        display_history = False
+
+        curr_hint = ""
+        curr_solution = ""
 
     elif command in cmd_history:
         display_history = True
 
     elif command in cmd_new:
         grid.create_new_puzzle()
+
         display_solution = False
+        display_hint = False
+        display_history = False
+
+        curr_hint = ""
+        curr_solution = ""
 
     elif command in cmd_quit:
         break

@@ -35,17 +35,18 @@ class Grid:
             self._grid[c] = [self._light_on for i in range(self._num_rows)]
 
     """num_moves is NOT guaranteed to create a grid requiring x moves to solve"""
-    def create_new_puzzle(self, num_random_toggles=5, rand_seed=None):
+    def create_new_puzzle(self, num_random_toggles=4, rand_seed=None):
         self._logger.info(f"Creating puzzle")
         
         # Initial state
         self._set_all_lights_on()
+        self._original_solution = set()
 
         # Toggle random lights, save solution
         random.seed(rand_seed)
 
-        # TODO - Too few moves and a smale grid size means it's likely for the grid to result in the original state (all lights on)
-        # Implement some guard against this
+        # Too few moves and a smale grid means it's likely for the grid to result in the original state (all lights on)
+        # TODO Implement some guard against this
         for i in range(num_random_toggles):
             random_col = random.randint(0, self._num_cols - 1)
             random_row = random.randint(0, self._num_rows - 1)

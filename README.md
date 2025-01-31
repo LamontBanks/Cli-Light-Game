@@ -2,95 +2,96 @@
 
 Super simple, console-based "adjacent light game" as as a fun coding exercise.
 
-Toggle on all the lights, but each light flips the lights next to it:
+Toggle on all the lights, but each light flips the lights next to it, ex:
 
-1. Start Game
+When all lights are off, toggle column `1`, row `1`...
 
-            0  1  2  3  4
-            -------------
-        0 |  O  O  .  O  O
-        1 |  O  .  O  .  O
-        2 |  O  .  O  O  O
-        3 |  .  O  O  .  .
-        4 |  .  .  O  .  O
+         0 >1  2  
+         -------
+     0 | .  .  .
+    >1 | . >.  .        
+     2 | .  .  .
 
-        Instructions - turn on all the lights
-        > Enter the col, row - format: 3,5 or 3, 5 or 3 , 5
-        Commands:
-        > Undo: ['u']
-        > Solution: ['solution']
-        > Solve: ['solve']
-        > New Puzzle: ['new']
-        > Solution: ['solution']
-        ---
-        Enter coordinates or command: 
+...lights on:
 
-1. Toggle a light: `1, 3`:
+         0  1  2  
+         -------
+     0 | .  O  .
+     1 | O  O  O        
+     2 | .  O  .
 
-            0  1  2  3  4
-            -------------
-        0 |  O  O  .  O  O
-        1 |  O  .  O  .  O
-        2 |  O  O  O  O  O
-        3 |  O  .  .  .  .
-        4 |  .  O  O  .  O
+Toggling column `2`, row `0`...:
 
-1. Toggle another light: `3, 3`:
+         0  1 >2  
+         -------
+    >0 | .  O >.
+     1 | O  O  O        
+     2 | .  O  .
 
-            0  1  2  3  4
-            -------------
-        0 |  O  O  .  O  O
-        1 |  O  .  O  .  O
-        2 |  O  O  O  .  O
-        3 |  O  .  O  O  O
-        4 |  .  O  O  O  O
+...lights on or off, depending on their previous state:
 
-## Commands
-Show the current solution with `solution`:
-
-    Enter coordinates or command: solution
-
-    
-        0  1  2  3  4
-        -------------
-    0 |  O  O  .  O  O
-    1 |  O  .  O  .  O
-    2 |  O  O  O  .  O
-    3 |  O  .  O  O  O
-    4 |  .  O  O  O  O
-
-    Instructions - turn on all the lights
-    > Enter the col, row - format: 3,5 or 3, 5 or 3 , 5
-    Commands:
-    > Undo: ['u']
-    > Solution: ['solution']
-    > Solve: ['solve']
-    > New Puzzle: ['new']
-    > Solution: [(0, 4), (2, 1), (2, 2), (1, 3)]
-
-Enter each coordinate to solve one at a time (order doesn't matter).
-
-         0  1  2  3  4
-         -------------
-    0 |  O  O  O  O  O
-    1 |  O  O  O  O  O
-    2 |  O  O  O  O  O
-    3 |  O  O  O  O  O
-    4 |  O  O  O  O  O
+         0  1 >2  
+         -------
+    >0 | .  . >O
+     1 | O  O  .        
+     2 | .  O  .
 
 ## Usage
 `$ python3 src/main.py`
+
+        0  1  2  3  4
+        -------------
+    0 |  .  .  O  .  .
+    1 |  .  .  O  O  .
+    2 |  O  O  O  .  .
+    3 |  O  O  O  .  .
+    4 |  .  O  .  O  .
+
+    >>> Turn on all the lights! <<<
+    Adjacent lights (up, down, left, right) will flip on/off at the same time.
+    Enter the col, row, ex: 3, 5
+
+                            Commands:
+    Undo: ['u', 'undo']     Reset: ['reset']        New Puzzle: ['new']
+    Hint: ['hint']
+    History: ['h', 'history']
+    Solve: ['solve']
+    Quit: ['quit', 'exit']
+    ---
+    Enter coordinates or command: 
+
+1. Toggle a light, ex: `1, 2`, etc:
+
+             0 >1  2  3  4           0  1  2  3  4
+            --------------           -------------
+        0 |  .  .  O  .  .       0 |  .  .  O  .  .
+        1 |  .  .  O  O  .       1 |  .  O  O  O  .
+       >2 |  O >O  O  .  .  ==>  2 |  .  .  .  .  .
+        3 |  O  O  O  .  .       3 |  O  .  O  .  .       
+        4 |  .  O  .  O  .       4 |  .  O  .  O  .
+
+## Commands
+Use the displayed commands as needed:
+
+                            Commands:
+    Undo: ['undo', 'u']     Reset: ['reset']        New Puzzle: ['new', 'n']
+    Hint: ['hint']
+    History: ['history', 'h']
+    Solve: ['solve']
+    Quit: ['quit', 'exit']
+    ---
+    Enter coordinates or command: 
 
 ## Tests
 - Unit: `$ ./test.sh`
 - Coverage: `https://coverage.readthedocs.io/en/7.6.10/`
 
 ## Future Enhancements
-- Display most recent move
 - Detect solved puzzle
+- Display most recent move
 - UI + click to toggle
 - Reset to initial state
 - Custom dimensions
-- Cleanr display - only show instuctions on demand
+- Clearer display - only show instuctions on demand
 - More unit tests
 - Higher-level Interaction tests
