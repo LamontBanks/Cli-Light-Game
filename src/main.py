@@ -19,20 +19,8 @@ cmd_hint = ['hint']
 # Game loop flags
 display_solution = False
 curr_solution = ""
-
 display_history = False
-
-display_hint = False
-curr_hint = ""
-hint_coord = ""
-hint_num_moves_left = ""
-
-
-def toggle_flag(flag):
-    if flag == True:
-        flag == False
-    else:
-        flag = True
+display_coord_hint = False
 
 while True:
     # Instructions
@@ -41,26 +29,37 @@ while True:
     print(f">>> Turn on all the lights! <<<")
     print("Adjacent lights (up, down, left, right) will flip on/off at the same time.")
     print("Enter the col, row, ex: 3, 5\n")
+
+    # Commands
     print(f"\t\t\tCommands:")
+
+    ## Undo
     print(f"Undo: {cmd_undo}\tReset: {cmd_reset}\tNew Puzzle: {cmd_new}")
 
-    if display_hint:
-        print(f"Hint: {curr_hint}")
-    else:
-        print(f"Hint: {cmd_hint}")
-
+    ## History
     if display_history:
         print(f"History: {grid.history()}")
     else:
         print(f"History: {cmd_history}")
 
-    # if display_solution:
-    #    print(f"Solve: {cmd_solve}")
-    # else:
-    #    print(f"Solve: {cmd_solve}")
-
+    ## Solve
     print(f"Solve: {cmd_solve}")
+
+    ## Quit
     print(f"Quit: {cmd_quit}")
+
+    ## Hint
+    # Always show the number of moves remaining
+    # Only show next coordinate if requested
+    hint = grid.hint()
+    hint_coord, num_moves_left = hint
+    hint_num_moves_left = f"Lights remaining: {str(num_moves_left)}"
+
+    if display_coord_hint:
+       print(f"> {hint_num_moves_left}, next light: {hint_coord}")
+    else:
+        print(f"> {hint_num_moves_left}, {cmd_hint} to show next light")
+
     print('---')
 
     # Read command
@@ -78,10 +77,10 @@ while True:
         try:
             grid.player_toggle_cell(col, row)
 
-            # Disable the hint if used
+            # Disable the coordinate hint if entered
             if hint_coord:
                 if col == hint_coord[0] and row == hint_coord[1]:
-                    display_hint = False
+                    display_coord_hint = False
             
             # End the game if the grid is solved
             if grid.is_solved():
@@ -101,16 +100,9 @@ while True:
     elif command in cmd_solution:
         display_solution = True
 
-    # Shows 1 random move in the solution + number of moves remaining (including the displayed hint)
+    # Shows next light location
     elif command in cmd_hint:
-        display_hint = True
-
-        hint = grid.hint()
-        hint_coord, hint_num_moves_left = hint
-        if hint_coord:
-            curr_hint = f"{hint_coord}, moves Left: {str(hint_num_moves_left)}"
-        else:
-            curr_hint = "No hint available"
+        display_coord_hint = True
 
     elif command in cmd_solve:
         sol = grid.get_curr_solution()

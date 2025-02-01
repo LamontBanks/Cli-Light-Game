@@ -1,6 +1,6 @@
 # Light Game
 
-Super simple, console-based "adjacent light game" as as a fun coding exercise.
+Super simple, console-based "adjacent light game" as as a fun coding/small projec exercise.
 
 Toggle on all the lights, but each light flips the lights next to it, ex:
 
@@ -52,11 +52,11 @@ Toggling column `2`, row `0`...:
     Enter the col, row, ex: 3, 5
 
                             Commands:
-    Undo: ['u', 'undo']     Reset: ['reset']        New Puzzle: ['new']
-    Hint: ['hint']
-    History: ['h', 'history']
+    Undo: ['undo', 'u']     Reset: ['reset']        New Puzzle: ['new', 'n']
+    History: ['history', 'h']
     Solve: ['solve']
     Quit: ['quit', 'exit']
+    Lights remaining: 2, ['hint'] to show next light
     ---
     Enter coordinates or command: 
 
@@ -70,15 +70,17 @@ Toggling column `2`, row `0`...:
         3 |  O  O  O  .  .       3 |  O  .  O  .  .       
         4 |  .  O  .  O  .       4 |  .  O  .  O  .
 
+1. The 'Lights remaining` count is key to solving the puzzle!
+
 ## Commands
 Use the displayed commands as needed:
 
                             Commands:
     Undo: ['undo', 'u']     Reset: ['reset']        New Puzzle: ['new', 'n']
-    Hint: ['hint']
     History: ['history', 'h']
     Solve: ['solve']
     Quit: ['quit', 'exit']
+    Lights remaining: 2, ['hint'] to show next light
     ---
     Enter coordinates or command: 
 
