@@ -3,8 +3,8 @@ import re
 from grid import Grid
 
 # Create grid
-grid = Grid()
-grid.create_new_puzzle(num_random_toggles=4)
+grid = Grid(3, 3)
+grid.create_new_puzzle()
 
 # Commands
 cmd_undo = ['undo', 'u']
@@ -53,7 +53,7 @@ while True:
     # Only show next coordinate if requested
     hint = grid.hint()
     hint_coord, num_moves_left = hint
-    hint_num_moves_left = f"Lights remaining: {str(num_moves_left)}"
+    hint_num_moves_left = f"Moves required: {str(num_moves_left)}"
 
     if display_coord_hint:
        print(f"> {hint_num_moves_left}, next light: {hint_coord}")
@@ -61,6 +61,7 @@ while True:
         print(f"> {hint_num_moves_left}, {cmd_hint} to show next light")
 
     print('---')
+
 
     # Read command
     command = input('Enter coordinates or command: ')

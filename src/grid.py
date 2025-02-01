@@ -35,8 +35,11 @@ class Grid:
             self._grid[c] = [self._light_on for i in range(self._num_rows)]
 
     """num_moves is NOT guaranteed to create a grid requiring x moves to solve"""
-    def create_new_puzzle(self, num_random_toggles=4, rand_seed=None):
+    def create_new_puzzle(self, num_random_toggles=None, rand_seed=None):
         self._logger.info(f"Creating puzzle")
+
+        if not num_random_toggles:
+            num_random_toggles = (self._num_cols * self._num_rows) // 3
         
         # Initial state
         self._set_all_lights_on()

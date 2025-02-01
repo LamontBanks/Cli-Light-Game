@@ -56,7 +56,7 @@ Toggling column `2`, row `0`...:
     History: ['history', 'h']
     Solve: ['solve']
     Quit: ['quit', 'exit']
-    Lights remaining: 2, ['hint'] to show next light
+    Moves required: 2, ['hint'] to show next light
     ---
     Enter coordinates or command: 
 
@@ -70,7 +70,7 @@ Toggling column `2`, row `0`...:
         3 |  O  O  O  .  .       3 |  O  .  O  .  .       
         4 |  .  O  .  O  .       4 |  .  O  .  O  .
 
-1. The 'Lights remaining` count is key to solving the puzzle!
+1. The 'Moves required` count is key to solving the puzzle!
 
 ## Commands
 Use the displayed commands as needed:
@@ -80,7 +80,7 @@ Use the displayed commands as needed:
     History: ['history', 'h']
     Solve: ['solve']
     Quit: ['quit', 'exit']
-    Lights remaining: 2, ['hint'] to show next light
+    Moves required: 2, ['hint'] to show next light
     ---
     Enter coordinates or command: 
 
