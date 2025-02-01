@@ -3,8 +3,8 @@ import re
 from grid import Grid
 
 # Create grid
-grid = Grid(5, 5)
-grid.create_new_puzzle(num_random_toggles=10)
+grid = Grid()
+grid.create_new_puzzle(num_random_toggles=4)
 
 # Commands
 cmd_undo = ['undo', 'u']
@@ -82,6 +82,12 @@ while True:
             if hint_coord:
                 if col == hint_coord[0] and row == hint_coord[1]:
                     display_hint = False
+            
+            # End the game if the grid is solved
+            if grid.is_solved():
+                print(grid)
+                print("Grid solved")
+                break
 
         except IndexError:
             print(f"==> Invalid col: {col}, row: {row}")
@@ -95,7 +101,7 @@ while True:
     elif command in cmd_solution:
         display_solution = True
 
-    # Shows 1 random move in the solution + number of moves remaining
+    # Shows 1 random move in the solution + number of moves remaining (including the displayed hint)
     elif command in cmd_hint:
         display_hint = True
 

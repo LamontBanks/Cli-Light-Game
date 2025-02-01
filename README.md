@@ -30,9 +30,9 @@ Toggling column `2`, row `0`...:
 
 ...lights on or off, depending on their previous state:
 
-         0  1 >2  
+         0  1  2  
          -------
-    >0 | .  . >O
+     0 | .  .  O
      1 | O  O  .        
      2 | .  O  .
 

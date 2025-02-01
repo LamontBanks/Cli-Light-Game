@@ -2,7 +2,7 @@ import random
 import logging
 
 class Grid:
-    def __init__(self, col=5, row=5):
+    def __init__(self, col=4, row=4):
         self._logger = logging.getLogger(__name__)
         logging.basicConfig(level=logging.CRITICAL)
 
@@ -156,16 +156,18 @@ class Grid:
         self._logger.info(f"Get current solution:")
         return list(self._curr_solution)
     
-    """Returns a random coordinate tuple from the current solution, and the number of moves remaining
-    (assuming the hint is performed)
+    """Returns a random coordinate tuple from the current solution, and the number of moves remaining (including the displayed hint)
     Ex: ((3, 5), 2)
     Ex: (None, 0)
     """
     def hint(self):
         try:
+            num_moves_left = len(self._curr_solution)
             rand_coord = self._curr_solution.pop()
-            hint = (rand_coord, len(self._curr_solution))
-            # Put the coord back
+            
+            hint = (rand_coord, num_moves_left)
+
+            # set.pop() removes item; put the coordinate back
             self._curr_solution.add(rand_coord)
             
             return hint
