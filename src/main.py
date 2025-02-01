@@ -3,7 +3,7 @@ import re
 from grid import Grid
 
 # Create grid
-grid = Grid(3, 3)
+grid = Grid()
 grid.create_new_puzzle()
 
 # Commands
