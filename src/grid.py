@@ -54,16 +54,23 @@ class Grid:
             self._toggle_cell_group(random_col, random_row)
             self._add_or_remove_coord_from_set(random_col, random_row, self._original_solution)
 
-        # Clear history
+        # Clear history and solution
         self._history = []
         self._curr_solution = self._original_solution.copy()
-        self._original_grid = self._grid.copy()
+
+        # Save a copy of the created grid
+        self._original_grid = []
+        for column in self._grid:
+            self._original_grid.append(column.copy())
 
     """Sets the puzzle to the original state"""
     def reset(self):
         self._logger.info(f"Resetting puzzle")
 
-        self._grid = self._original_grid.copy()
+        self._grid = []
+        for column in self._original_grid:
+            self._grid.append(column.copy())
+
         self._curr_solution = self._original_solution.copy()
         self._history = []
 

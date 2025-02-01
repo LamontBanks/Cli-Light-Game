@@ -229,22 +229,22 @@ class TestGrid(unittest.TestCase):
         grid = Grid(col, row)
         grid.create_new_puzzle(rand_seed=7)
 
-        # Save grid state
-        saved_original_grid = grid._grid
+        # Save initial grid
+        saved_grid = []
+        for column in grid._grid:
+            saved_grid.append(column.copy())
 
         # Player does some moves
-        player_moves = self.list_of_random_moves(
-            col, row, 5, rand_seed=11
-        )
-        for move in player_moves:
-            c, r = move
-            grid.player_toggle_cell(c, r)
+        self.perform_player_moves(grid, 5, rand_seed=11)
+
+        # Check that the grid is different
+        self.assertNotEqual(grid._grid, saved_grid)
 
         # Reset grid
         grid.reset()
 
         # Current grid re-initailized to original
-        self.assertEqual(grid._grid, saved_original_grid)
+        self.assertEqual(grid._grid, saved_grid)
         # Clear history  
         self.assertEqual(grid.history(), [])
         # Current solution re-initialized
