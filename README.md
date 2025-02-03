@@ -89,10 +89,8 @@ Use the displayed commands as needed:
 - Coverage: `https://coverage.readthedocs.io/en/7.6.10/`
 
 ## Future Enhancements
-- Detect solved puzzle
 - Display most recent move
 - UI + click to toggle
-- Reset to initial state
 - Custom dimensions
 - Clearer display - only show instuctions on demand
 - More unit tests

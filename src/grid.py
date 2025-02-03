@@ -34,12 +34,11 @@ class Grid:
         for c in range(col):
             self._grid[c] = [self._light_on for i in range(self._num_rows)]
 
-    """num_moves is NOT guaranteed to create a grid requiring x moves to solve"""
     def create_new_puzzle(self, num_random_toggles=None, rand_seed=None):
         self._logger.info(f"Creating puzzle")
 
         if not num_random_toggles:
-            num_random_toggles = (self._num_cols * self._num_rows) // 3
+            num_random_toggles = (self._num_cols * self._num_rows) // 4
         
         # Initial state
         self._set_all_lights_on()
@@ -48,11 +47,19 @@ class Grid:
         # Toggle random lights, save solution
         random.seed(rand_seed)
 
-        # Too few moves and a smale grid means it's likely for the grid to result in the original state (all lights on)
-        # TODO Implement some guard against this
+        # .pop() random coordinates from col and row sets
+        col_values = [x for x in range(self._num_cols)]
+        row_values = [x for x in range(self._num_rows)]
+
         for i in range(num_random_toggles):
-            random_col = random.randint(0, self._num_cols - 1)
-            random_row = random.randint(0, self._num_rows - 1)
+            # Reset values if needed
+            if len(col_values) == 0:
+                col_values = [x for x in range(self._num_cols)]
+            if len(row_values) == 0:
+                row_values = [x for x in range(self._num_rows)]
+
+            random_col = col_values.pop(random.randrange(0, len(col_values)))
+            random_row = row_values.pop(random.randrange(0, len(row_values)))
 
             self._toggle_cell_group(random_col, random_row)
             self._add_or_remove_coord_from_set(random_col, random_row, self._original_solution)

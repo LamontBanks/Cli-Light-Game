@@ -22,7 +22,9 @@ curr_solution = ""
 display_history = False
 display_coord_hint = False
 
-while True:
+max_num_wrong_moves = grid.hint()[1] // 2
+
+while max_num_wrong_moves > 0:
     # Instructions
     print('\n')
     print(grid)
@@ -31,10 +33,10 @@ while True:
     print("Enter the col, row, ex: 3, 5\n")
 
     # Commands
-    print(f"\t\t\tCommands:")
+    print(f"Commands:")
 
-    ## Undo
-    print(f"Undo: {cmd_undo}\tReset: {cmd_reset}\tNew Puzzle: {cmd_new}")
+    ## Undo, Reset, New, Quit
+    print(f"Undo: {cmd_undo}\tReset: {cmd_reset}\tNew Puzzle: {cmd_new}\tQuit: {cmd_quit}")
 
     ## History
     if display_history:
@@ -44,9 +46,6 @@ while True:
 
     ## Solve
     print(f"Solve: {cmd_solve}")
-
-    ## Quit
-    print(f"Quit: {cmd_quit}")
 
     ## Hint
     # Always show the number of moves remaining
@@ -60,6 +59,8 @@ while True:
     else:
         print(f"> {hint_num_moves_left}, {cmd_hint} to show next light")
 
+    print(f"> Wrong moves left: {max_num_wrong_moves}")
+
     print('---')
 
 
@@ -67,7 +68,6 @@ while True:
     command = input('Enter coordinates or command: ')
 
     # Toggle cell
-    # TODO: Couldn't do re.match in case statements?
     if (re.match(r"\s*\d+\s*,\s*\d+\s*", command)):
         coords_input = command.split(',')
         col = int(coords_input[0])
@@ -76,7 +76,13 @@ while True:
         print(f"Entered col: {col}, row: {row}")
 
         try:
+            # Save number of moves remaining before acting
+            num_moves_before = len(grid.get_curr_solution())
+
             grid.player_toggle_cell(col, row)
+
+            if num_moves_before < len(grid.get_curr_solution()):
+                max_num_wrong_moves -= 1
 
             # Disable the coordinate hint if entered
             if hint_coord:
@@ -86,7 +92,7 @@ while True:
             # End the game if the grid is solved
             if grid.is_solved():
                 print(grid)
-                print("Grid solved")
+                print(">>> Grid solved! <<<")
                 break
 
         except IndexError:
