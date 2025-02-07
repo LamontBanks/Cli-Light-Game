@@ -12,7 +12,7 @@ class Grid:
         self._num_cols = col
         self._num_rows = row
         self._light_on = 'O'
-        self._light_off = '.'
+        self._light_off = '·'   # Mac: Shift+Option+9
         self._history = []
 
         # Saves the coordinates used to generate the puzzle, and the current solution based on the player inputs
@@ -90,6 +90,7 @@ class Grid:
              for row in range(self._num_rows):
                 self._grid[col][row] = self._light_on
 
+    """Used by the player - toggles the cell, but also updates the current solution and history"""
     def player_toggle_cell(self, col, row):
         self._logger.info(f"Toggle cell: ({col}, {row})")
         self._toggle_cell_group(col, row)

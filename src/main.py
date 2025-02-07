@@ -81,10 +81,11 @@ while max_num_wrong_moves > 0:
 
             grid.player_toggle_cell(col, row)
 
+            # Wrong move - derement num of wrong moves allowed
             if num_moves_before < len(grid.get_curr_solution()):
                 max_num_wrong_moves -= 1
 
-            # Disable the coordinate hint if entered
+            # Disable the coordinate hint, if the player just entered it
             if hint_coord:
                 if col == hint_coord[0] and row == hint_coord[1]:
                     display_coord_hint = False
@@ -145,3 +146,15 @@ while max_num_wrong_moves > 0:
 
     else:
         continue
+
+# Print solution and grid
+if not grid.is_solved():
+    sol_coords = grid._get_solution()
+
+    for coords in sol_coords:
+        print("\\")
+        print(coords)
+        print("/")
+        print(grid)
+        grid.player_toggle_cell(coords[0], coords[1])
+    print(grid)
