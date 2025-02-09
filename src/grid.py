@@ -279,6 +279,15 @@ class Grid:
     grid2 - The underlying grid, usually taken after a cell has been toggled
     label (optional) - str to display between grids, usually indicating the action taken
     highlight_first_grid_cell_coord (optional) - (int, int) col, row tuple in the first grid to "highlight" with a different symbol, ex: X
+
+    Ex:
+
+        0  1  2                     0  1  2
+        -------                     -------
+    0 |  ·  O  O                0 |  ·  O  O
+    1 |  O  ·  ·  -- (1, 2) ->  1 |  O  O  ·
+    2 |  O  X  ·                2 |  ·  O  O
+    3 |  O  ·  ·                3 |  O  O  ·
     """
     def print_grid_transtion(self, grid1, grid2, label="", highlight_first_grid_cell_coord=None):
         repr_str = ""
