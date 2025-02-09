@@ -271,3 +271,101 @@ class Grid:
             row = ""
 
         return repr_str
+    
+    """Prints this grid (__repr__) followed by a second grid.
+    Can provide an optional label (ex: coordinates) to display between the grids"""
+    def print_grid_transtion(self, grid2, label=""):
+        repr_str = ""
+        grid_space_sep = " "
+
+        # Wrap label in an arrow, use to calculate spaces between grids
+        if label != "":
+            label = "  -- " + label + " ->  "
+            for i in range(len(label) - 1):
+                grid_space_sep += " "
+        else:
+            grid_space_sep = "    "
+        
+        ### This grid column labels
+        col_label_indent = "   "
+        col_labels = "\n" + col_label_indent
+        for i in range(self._num_cols):
+            col_labels += "  " + str(i)
+
+        # Second grid column labels
+        col_labels += grid_space_sep + col_label_indent
+        for i in range(grid2._num_cols):
+            col_labels += "  " + str(i)
+
+        ### Column underline for first grid...
+        col_underline_indent = "     "
+        col_labels += "\n" + col_underline_indent
+        for i in range(self._num_cols):
+            col_labels += "---"
+        # Remove trailing underlines
+        col_labels = col_labels[:-2]
+        
+        # Column underline for the second grid...
+        col_labels += grid_space_sep + col_underline_indent
+        for i in range(grid2._num_cols):
+            col_labels += "---"
+        # Remove trailing underlines
+        col_labels = col_labels[:-2] + "\n"
+
+        repr_str += col_labels
+
+        ### Rows
+        # Determine max number of rows to draw
+        # For the grid with fewer rows, insert spaces to preserve formatting
+        max_num_rows = max(self._num_rows, grid2._num_rows)
+
+        # If a label is provided, insert it after the middle row of the grid with the fewest rows
+        label_row_index = None
+        if label != "":
+            min_row_count = min(self._num_rows, grid2._num_rows)
+            label_row_index = (min_row_count // 2) - 1
+        
+        row = ""
+        for r in range(max_num_rows):
+            ### This grids row labels and values
+            if r < self._num_rows:
+                # Label
+                row += f"{str(r)} |"
+                # Values
+                for c in range(self._num_cols):
+                    row += "  " + self._grid[c][r]
+            # Or, whitespace
+            else:
+                row += col_label_indent
+                for c in range(self._num_cols + 1):
+                    row += "   "
+                # Remove trailing whitespace
+                row = row[:-3]
+
+            ### Add label or whitespace between grid
+            if label != "" and r == label_row_index:
+                row += label
+            else:
+                row += grid_space_sep
+
+            ### Second grid labels and values
+            if i < grid2._num_rows:
+                # Label
+                row += f"{str(r)} |"
+                # Values
+                for c in range(grid2._num_cols):
+                    row += "  " + grid2._grid[c][r]
+
+            repr_str += row + "\n"
+            # Clear row for the next values
+            row = ""
+
+        return repr_str
+
+grid1 = Grid(3, 4)
+grid1.create_new_puzzle()
+
+grid2 = Grid(6, 6)
+grid2.create_new_puzzle()
+
+print(grid1.print_grid_transtion(grid2, label=""))
