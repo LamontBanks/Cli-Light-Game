@@ -118,7 +118,6 @@ Show the solution steps with `solve`, ex:
 ## Future Enhancements
 - Use [`cmd`](https://docs.python.org/3.12/library/cmd.html) to handle commands
 - Display most recent move
-- Show step-by-step when displaying the solution
 - TKinter UI + click to toggle
 - Set Custom dimensions
 - Minimize commands

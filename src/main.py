@@ -33,7 +33,7 @@ def reset_game_flags():
     curr_hint = ""
     curr_solution = ""
 
-while max_num_wrong_moves > 0:
+while max_num_wrong_moves >= 0:
     # Instructions
     print('\n')
     print(grid)
