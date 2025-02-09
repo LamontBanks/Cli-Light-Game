@@ -8,17 +8,17 @@ When all lights are off, toggle column `1`, row `1`...
 
          0 ›1  2  
          -------
-     0 | .  .  .
-    ›1 | . ›.  .        
-     2 | .  .  .
+     0 | ·  ·  ·
+    ›1 | · ›·  ·        
+     2 | ·  ·  ·
 
 ...lights on:
 
          0  1  2  
          -------
-     0 | .  O  .
+     0 | ·  O  ·
      1 | O  O  O        
-     2 | .  O  .
+     2 | ·  O  ·
 
 Toggling column `2`, row `0`...:
 

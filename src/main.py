@@ -148,7 +148,7 @@ while max_num_wrong_moves > 0:
         continue
 
 # Print solution and grid
-if not grid.is_solved():
+if not grid.is_solved() and display_solution:
     sol_coords = grid._get_solution()
 
     for coords in sol_coords:
