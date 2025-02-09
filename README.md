@@ -81,8 +81,35 @@ Use the displayed commands as needed:
     Solve: ['solve']
     Quit: ['quit', 'exit']
     Moves required: 2, ['hint'] to show next light
-    ---
-    Enter coordinates or command: 
+
+Show the solution steps with `solve`, ex:
+
+    - Step: (3, 1)
+
+        0  1  2 ›3            0  1  2  3
+        ----------            ----------
+    0 | O  ·  ·  ·       0 |  O  ·  ·  O
+    1›| ·  O  ·  X       1 |  ·  O  O  O
+    2 | ·  O  O  ·  -->  2 |  ·  O  O  O
+    3 | O  O  O  O       3 |  O  O  O  O
+
+    - Step: (1, 0)
+
+        0 ›1  2  3            0  1  2  3
+        ----------            ----------
+    0›| O  X  ·  O       0 |  ·  O  O  O
+    1 | ·  O  O  O       1 |  ·  ·  O  O
+    2 | ·  O  O  O  -->  2 |  ·  O  O  O
+    3 | O  O  O  O       3 |  O  O  O  O
+
+    - Step: (0, 1)
+
+        ›0  1  2  3           0  1  2  3
+        ----------            ----------
+    0 | ·  O  O  O       0 |  O  O  O  O
+    1›| X  ·  O  O       1 |  O  O  O  O
+    2 | ·  O  O  O  -->  2 |  O  O  O  O
+    3 | O  O  O  O       3 |  O  O  O  O
 
 ## Tests
 - Unit: `$ ./test.sh`

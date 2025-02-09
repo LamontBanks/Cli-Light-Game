@@ -160,6 +160,37 @@ class Grid:
         self._logger.debug(f"Get original solution:")
         return list(self._original_solution)
     
+    """Returns the step-by-step string of the solution. Solves the puzzle"""
+    def solution_steps_str(self):
+        steps = ""
+        solution = self.get_curr_solution()
+
+        if len(solution) == 0:
+            return self.__repr__()
+    
+        for coords in solution:
+            col, row = coords
+
+            # Save initial state
+            original_grid_state = []
+            for column in self._grid:
+                original_grid_state.append(column.copy())
+
+            # Toggle the cell
+            self._toggle_cell_group(col, row)
+            self._add_or_remove_coord_from_set(col, row, self._curr_solution)
+            
+            # Save next state
+            next_grid_state = []
+            for column in self._grid:
+                next_grid_state.append(column.copy())
+
+            # Get transtion, add to result string
+            steps += self._grid_transtion_repr(original_grid_state, next_grid_state, label=f"Step: {coords[0], coords[1]}", highlight_first_grid_cell_coord=coords)
+            steps += "\n"
+
+        return steps
+    
     def history(self):
         return self._history
     
@@ -282,14 +313,15 @@ class Grid:
 
     Ex:
 
-        0  1  2                     0  1  2
-        -------                     -------
-    0 |  ·  O  O                0 |  ·  O  O
-    1 |  O  ·  ·  -- (1, 2) ->  1 |  O  O  ·
-    2 |  O  X  ·                2 |  ·  O  O
-    3 |  O  ·  ·                3 |  O  O  ·
+    (1, 2)
+        0 ›1  2  3            0  1  2  3
+        ----------            ----------
+    0 | ·  ·  ·  O       0 |  ·  ·  ·  O
+    1 | ·  O  ·  ·       1 |  ·  ·  ·  ·
+    2›| ·  X  O  ·  -->  2 |  O  O  ·  ·
+    3 | O  ·  ·  ·       3 |  O  O  ·  ·
     """
-    def print_grid_transtion(self, grid1, grid2, label="", highlight_first_grid_cell_coord=None):
+    def _grid_transtion_repr(self, grid1, grid2, label="", highlight_first_grid_cell_coord=None):
         repr_str = ""
         grid_space_sep = " "
 
@@ -299,19 +331,25 @@ class Grid:
         grid2_num_cols = len(grid2)
         grid2_num_rows = len(grid2[0])
 
-        # Wrap label in an arrow, use to calculate spaces between grids
+        grid_space_sep = "       "
+        grid_transition_arrow = "  -->  "
+
+        # Label as the first line, if provided
+        col_labels = ""
         if label != "":
-            label = "  -- " + label + " ->  "
-            for i in range(len(label) - 1):
-                grid_space_sep += " "
-        else:
-            grid_space_sep = "    "
+            col_labels += "- " + label + "\n"
         
         ### First grid column labels
         col_label_indent = "   "
-        col_labels = "\n" + col_label_indent
+        col_labels += "\n" + col_label_indent
         for i in range(grid1_num_cols):
-            col_labels += "  " + str(i)
+            if highlight_first_grid_cell_coord != None:
+                if i == highlight_first_grid_cell_coord[0]:
+                    col_labels += " ›" + str(i)
+                else:
+                    col_labels += "  " + str(i)
+            else:
+                col_labels += "  " + str(i)
 
         # Second grid column labels
         col_labels += grid_space_sep + col_label_indent
@@ -340,18 +378,23 @@ class Grid:
         # For the grid with fewer rows, insert spaces to preserve formatting
         max_num_rows = max(grid1_num_rows, grid2_num_rows)
 
-        # If a label is provided, insert it after the middle row of the grid with fewer rows
-        label_row_index = None
-        if label != "":
-            min_row_count = min(grid1_num_rows, grid2_num_rows)
-            label_row_index = (min_row_count // 2) - 1
+        # Insert arrow on middle row of the grid with fewer rows
+        arrow_row_index = None
+        min_row_count = min(grid1_num_rows, grid2_num_rows)
+        arrow_row_index = (min_row_count // 2)
         
         row = ""
         for r in range(max_num_rows):
             ### First grid row labels and values
             if r < grid1_num_rows:
                 # Label
-                row += f"{str(r)} |"
+                if highlight_first_grid_cell_coord != None:
+                    if r == highlight_first_grid_cell_coord[1]:
+                        row += f"{str(r)}›|"
+                    else:
+                        row += f"{str(r)} |"
+                else:
+                    row += f"{str(r)} |"
                 # Values
                 for c in range(grid1_num_cols):
                     # Draw special symbol, or original value
@@ -370,9 +413,9 @@ class Grid:
                 # Remove trailing whitespace
                 row = row[:-3]
 
-            ### Add label or whitespace between grid
-            if label != "" and r == label_row_index:
-                row += label
+            ### Add arrow or whitespace after grid rows
+            if r == arrow_row_index:
+                row += grid_transition_arrow
             else:
                 row += grid_space_sep
 
@@ -390,10 +433,7 @@ class Grid:
 
         return repr_str
 
-grid1 = Grid(3, 4)
-grid1.create_new_puzzle()
+grid = Grid()
+grid.create_new_puzzle()
 
-grid2 = Grid(6, 6)
-grid2.create_new_puzzle()
-
-print(grid1.print_grid_transtion(grid2, label=""))
+print(grid.solution_steps_str())

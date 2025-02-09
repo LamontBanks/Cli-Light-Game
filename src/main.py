@@ -8,7 +8,7 @@ grid.create_new_puzzle()
 
 # Commands
 cmd_undo = ['undo', 'u']
-cmd_solution = ['solution']
+cmd_solution = ['solution'] # For debugging
 cmd_solve = ['solve']
 cmd_reset = ['reset']
 cmd_new = ['new', 'n']
@@ -23,6 +23,15 @@ display_history = False
 display_coord_hint = False
 
 max_num_wrong_moves = grid.hint()[1] // 2
+
+def reset_game_flags():
+    display_solution = False
+    display_hint = False
+    display_history = False
+    display_coord_hint = False
+
+    curr_hint = ""
+    curr_solution = ""
 
 while max_num_wrong_moves > 0:
     # Instructions
@@ -46,6 +55,9 @@ while max_num_wrong_moves > 0:
 
     ## Solve
     print(f"Solve: {cmd_solve}")
+
+    if display_solution:
+        print(f"Solution: {grid.get_curr_solution()}")
 
     ## Hint
     # Always show the number of moves remaining
@@ -113,48 +125,22 @@ while max_num_wrong_moves > 0:
         display_coord_hint = True
 
     elif command in cmd_solve:
-        sol = grid.get_curr_solution()
-        if len(sol) > 0:
-            for coords in sol:
-                grid.player_toggle_cell(coords[0], coords[1])
+        print(grid.solution_steps_str())
+        break
 
     elif command in cmd_reset:
         grid.reset()
-
-        display_solution = False
-        display_hint = False
-        display_history = False
-
-        curr_hint = ""
-        curr_solution = ""
+        reset_game_flags()
 
     elif command in cmd_history:
         display_history = True
 
     elif command in cmd_new:
         grid.create_new_puzzle()
-
-        display_solution = False
-        display_hint = False
-        display_history = False
-
-        curr_hint = ""
-        curr_solution = ""
+        reset_game_flags()
 
     elif command in cmd_quit:
         break
 
     else:
         continue
-
-# Print solution and grid
-if not grid.is_solved() and display_solution:
-    sol_coords = grid._get_solution()
-
-    for coords in sol_coords:
-        print("\\")
-        print(coords)
-        print("/")
-        print(grid)
-        grid.player_toggle_cell(coords[0], coords[1])
-    print(grid)
