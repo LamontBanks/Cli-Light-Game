@@ -381,7 +381,7 @@ class Grid:
         # Insert arrow on middle row of the grid with fewer rows
         arrow_row_index = None
         min_row_count = min(grid1_num_rows, grid2_num_rows)
-        arrow_row_index = (min_row_count // 2)
+        arrow_row_index = (min_row_count // 2) - 1
         
         row = ""
         for r in range(max_num_rows):
@@ -400,7 +400,7 @@ class Grid:
                     # Draw special symbol, or original value
                     if highlight_first_grid_cell_coord != None:
                         if c == highlight_first_grid_cell_coord[0] and r == highlight_first_grid_cell_coord[1]:
-                            row += "  " + "X"
+                            row += " >" + grid1[c][r]
                         else:
                             row += "  " + grid1[c][r]
                     else:

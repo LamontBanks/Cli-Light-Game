@@ -22,7 +22,8 @@ curr_solution = ""
 display_history = False
 display_coord_hint = False
 
-max_num_wrong_moves = grid.hint()[1] // 2
+num_solution_moves = grid.hint()[1]
+max_num_wrong_moves = num_solution_moves + 1 // 2
 
 def reset_game_flags():
     display_solution = False

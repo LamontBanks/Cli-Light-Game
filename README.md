@@ -84,32 +84,32 @@ Use the displayed commands as needed:
 
 Show the solution steps with `solve`, ex:
 
-    - Step: (3, 1)
+    - Step: (1, 2)
 
-        0  1  2 ›3            0  1  2  3
-        ----------            ----------
-    0 | O  ·  ·  ·       0 |  O  ·  ·  O
-    1›| ·  O  ·  X       1 |  ·  O  O  O
-    2 | ·  O  O  ·  -->  2 |  ·  O  O  O
-    3 | O  O  O  O       3 |  O  O  O  O
+        0 ›1  2            0  1  2
+        -------            -------
+    0 | O  O  ·       0 |  O  O  ·
+    1 | O  O  ·  -->  1 |  O  ·  ·
+    2›| O >·  O       2 |  ·  O  ·
+    3 | ·  O  O       3 |  ·  ·  O
 
-    - Step: (1, 0)
+    - Step: (0, 3)
 
-        0 ›1  2  3            0  1  2  3
-        ----------            ----------
-    0›| O  X  ·  O       0 |  ·  O  O  O
-    1 | ·  O  O  O       1 |  ·  ·  O  O
-    2 | ·  O  O  O  -->  2 |  ·  O  O  O
-    3 | O  O  O  O       3 |  O  O  O  O
+       ›0  1  2            0  1  2
+        -------            -------
+    0 | O  O  ·       0 |  O  O  ·
+    1 | O  ·  ·  -->  1 |  O  ·  ·
+    2 | ·  O  ·       2 |  O  O  ·
+    3›|>·  ·  O       3 |  O  O  O
 
-    - Step: (0, 1)
+    - Step: (2, 1)
 
-        ›0  1  2  3           0  1  2  3
-        ----------            ----------
-    0 | ·  O  O  O       0 |  O  O  O  O
-    1›| X  ·  O  O       1 |  O  O  O  O
-    2 | ·  O  O  O  -->  2 |  O  O  O  O
-    3 | O  O  O  O       3 |  O  O  O  O
+        0  1 ›2            0  1  2
+        -------            -------
+    0 | O  O  ·       0 |  O  O  O
+    1›| O  · >·  -->  1 |  O  O  O
+    2 | O  O  ·       2 |  O  O  O
+    3 | O  O  O       3 |  O  O  O
 
 ## Tests
 - Unit: `$ ./test.sh`
