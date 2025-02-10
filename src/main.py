@@ -145,3 +145,6 @@ while max_num_wrong_moves >= 0:
 
     else:
         continue
+
+if not grid.is_solved():
+    print(grid.solution_steps_str())

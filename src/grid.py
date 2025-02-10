@@ -2,7 +2,7 @@ import random
 import logging
 
 class Grid:
-    def __init__(self, col=3, row=4):
+    def __init__(self, col=4, row=4):
         self._logger = logging.getLogger(__name__)
         logging.basicConfig(level=logging.CRITICAL)
 
