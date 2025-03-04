@@ -38,6 +38,7 @@ Toggling column `2`, row `0`...:
 
 ## Usage
 `$ python3 src/main.py`
+Generates a new game session:
 
         0  1  2  3  4
         -------------
@@ -61,6 +62,8 @@ Toggling column `2`, row `0`...:
     Enter coordinates or command: 
 
 1. Toggle a light, ex: `1, 2`, etc:
+
+        Enter coordinates or command: 1, 2
 
              0 ›1  2  3  4           0  1  2  3  4
             --------------           -------------

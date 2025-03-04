@@ -308,8 +308,8 @@ class Grid:
     Inputs: 
     grid1 - The underlying grid (ex, self._grid)
     grid2 - The underlying grid, usually taken after a cell has been toggled
-    label (optional) - str to display between grids, usually indicating the action taken
-    highlight_first_grid_cell_coord (optional) - (int, int) col, row tuple in the first grid to "highlight" with a different symbol, ex: X
+    label (optional) - str to display for the grids, usually indicating the action taken
+    highlight_first_grid_cell_coord (optional) - (int, int) col, row tuple in the first grid to differentiate it from the other lights. Ex "X"
 
     Ex:
 
