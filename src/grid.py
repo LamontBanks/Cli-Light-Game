@@ -432,8 +432,3 @@ class Grid:
             row = ""
 
         return repr_str
-
-grid = Grid()
-grid.create_new_puzzle()
-
-print(grid.solution_steps_str())
